@@ -2,7 +2,8 @@ FROM adoptopenjdk/openjdk8:alpine-jre
 
 ARG MINECRAFT_VERSION=1.12.2
 ARG SPONGE_TYPE=spongeforge
-ARG SPONGE_VERSION=2838-7.3.0
+ARG SPONGEFORGE_VERSION=2838
+ARG SPONGE_VERSION=7.3.0
 ARG FORGE_VERSION=14.23.5.2854
 
 ENV SPONGE_TYPE=$SPONGE_TYPE \
@@ -11,12 +12,13 @@ ENV SPONGE_TYPE=$SPONGE_TYPE \
     SPONGE_USER=sponge \
     SPONGE_GROUP=sponge \
     MINECRAFT_VERSION=$MINECRAFT_VERSION \
+    SPONGEFORGE_VERSION=$SPONGEFORGE_VERSION \
     SPONGE_VERSION=$SPONGE_VERSION \
     FORGE_VERSION=$FORGE_VERSION \
     JAVA_OPTS='-Xms1G -Xmx1G'
 
 LABEL \
-    name=spongeforge \
+    name=sponge-openjdk \
     version=$MINECRAFT_VERSION-$SPONGE_VERSION \
     maintainer='SettingDust <settingdust@gmail.com>'
 
@@ -33,9 +35,14 @@ RUN apk update \
         && java -jar $SPONGE_ROOT/forge-$MINECRAFT_VERSION-$FORGE_VERSION-installer.jar --installServer $SPONGE_ROOT/ \
         && rm $SPONGE_ROOT/forge-$MINECRAFT_VERSION-$FORGE_VERSION-installer.jar $SPONGE_ROOT/*.log; \
     fi \
-    # SpongeForge
-    && wget -O $SPONGE_ROOT/mods/$SPONGE_TYPE-$MINECRAFT_VERSION-$SPONGE_VERSION.jar https://repo.spongepowered.org/maven/org/spongepowered/$SPONGE_TYPE/$MINECRAFT_VERSION-$SPONGE_VERSION/$SPONGE_TYPE-$MINECRAFT_VERSION-$SPONGE_VERSION.jar \
-    && ln -sf $SPONGE_ROOT/mods/$SPONGE_TYPE-$MINECRAFT_VERSION-$SPONGE_VERSION.jar $SPONGE_WORKSPACE/mods/$SPONGE_TYPE-$MINECRAFT_VERSION-$SPONGE_VERSION.jar \
+    # Sponge
+    && if [ $SPONGE_TYPE = spongeforge ]; then \
+        && TMP_VERSION=$MINECRAFT_VERSION-$SPONGEFORGE_VERSION-$SPONGE_VERSION; \
+    && else \
+        && TMP_VERSION=$MINECRAFT_VERSION-$SPONGE_VERSION; \
+    && fi \
+    && wget -O $SPONGE_ROOT/mods/$SPONGE_TYPE-$TMP_VERSION.jar https://repo.spongepowered.org/maven/org/spongepowered/$SPONGE_TYPE/$TMP_VERSION/$SPONGE_TYPE-$TMP_VERSION.jar \
+    && ln -sf $SPONGE_ROOT/mods/$SPONGE_TYPE-$TMP_VERSION.jar $SPONGE_WORKSPACE/mods/$SPONGE_TYPE-$TMP_VERSION.jar \
     # Create user
     && addgroup -S $SPONGE_GROUP \
     && adduser -G $SPONGE_GROUP -S $SPONGE_USER \
