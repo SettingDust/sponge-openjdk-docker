@@ -28,3 +28,57 @@ jobs:
           repository: settingdust/sponge-openjdk
           tags: vanilla
           build_args: SPONGE_TYPE=spongevanilla
+
+      - name: Push 7.3.0 forge to Docker Hub
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: settingdust/sponge-openjdk
+          tags: forge-7.3.0
+          build_args: SPONGE_TYPE=spongevanilla, SPONGE_VERSION=7.3.0
+          
+      - name: Push 7.3.0 vanilla to Docker Hub
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: settingdust/sponge-openjdk
+          tags: vanilla-7.3.0
+          build_args: SPONGE_TYPE=spongevanilla, SPONGE_VERSION=7.3.0
+
+      - name: Push 7.2.0 forge to Docker Hub
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: settingdust/sponge-openjdk
+          tags: forge-7.2.0
+          build_args: SPONGE_TYPE=spongevanilla, SPONGE_VERSION=7.2.0
+          
+      - name: Push 7.2.0 vanilla to Docker Hub
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: settingdust/sponge-openjdk
+          tags: vanilla-7.2.0
+          build_args: SPONGE_TYPE=spongevanilla, SPONGE_VERSION=7.2.0          
+
+      - name: Push 7.1.10 forge to Docker Hub
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: settingdust/sponge-openjdk
+          tags: forge-7.1.10
+          build_args: SPONGE_TYPE=spongevanilla, SPONGE_VERSION=7.1.10
+          
+      - name: Push 7.1.10 vanilla to Docker Hub
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: settingdust/sponge-openjdk
+          tags: vanilla-7.1.10
+          build_args: SPONGE_TYPE=spongevanilla, SPONGE_VERSION=7.1.10                
