@@ -37,10 +37,10 @@ RUN apk update \
     fi \
     # Sponge
     && if [ $SPONGE_TYPE = spongeforge ]; then \
-        && TMP_VERSION=$MINECRAFT_VERSION-$SPONGEFORGE_VERSION-$SPONGE_VERSION; \
-    && else \
-        && TMP_VERSION=$MINECRAFT_VERSION-$SPONGE_VERSION; \
-    && fi \
+        TMP_VERSION=$MINECRAFT_VERSION-$SPONGEFORGE_VERSION-$SPONGE_VERSION; \
+       else \
+        TMP_VERSION=$MINECRAFT_VERSION-$SPONGE_VERSION; \
+       fi \
     && wget -O $SPONGE_ROOT/mods/$SPONGE_TYPE-$TMP_VERSION.jar https://repo.spongepowered.org/maven/org/spongepowered/$SPONGE_TYPE/$TMP_VERSION/$SPONGE_TYPE-$TMP_VERSION.jar \
     && ln -sf $SPONGE_ROOT/mods/$SPONGE_TYPE-$TMP_VERSION.jar $SPONGE_WORKSPACE/mods/$SPONGE_TYPE-$TMP_VERSION.jar \
     # Create user
