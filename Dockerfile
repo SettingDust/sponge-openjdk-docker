@@ -56,3 +56,4 @@ CMD echo eula=true > $SPONGE_WORKSPACE/eula.txt \
             java $JAVA_OPTS -jar $SPONGE_ROOT/forge-$MINECRAFT_VERSION-$FORGE_VERSION.jar --nogui; \
         else \
             java $JAVA_OPTS -jar $SPONGE_ROOT/minecraft_server.$MINECRAFT_VERSION.jar --nogui; \
+        fi
