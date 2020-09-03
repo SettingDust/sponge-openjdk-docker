@@ -1,0 +1,10 @@
+version: "3.4"
+
+services:
+  sponge-openjdk:
+    image: sponge-openjdk
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 25565
