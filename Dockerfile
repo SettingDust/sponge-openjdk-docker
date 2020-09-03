@@ -51,4 +51,8 @@ VOLUME $SPONGE_WORKSPACE
 
 EXPOSE 25565
 
-CMD echo eula=true > $SPONGE_WORKSPACE/eula.txt && java $JAVA_OPTS -jar $SPONGE_ROOT/forge-$MINECRAFT_VERSION-$FORGE_VERSION.jar --nogui
+CMD echo eula=true > $SPONGE_WORKSPACE/eula.txt \
+    && if [ ${SPONGE_TYPE} = spongeforge ]; then \
+            java $JAVA_OPTS -jar $SPONGE_ROOT/forge-$MINECRAFT_VERSION-$FORGE_VERSION.jar --nogui; \
+        else \
+            java $JAVA_OPTS -jar $SPONGE_ROOT/minecraft_server.$MINECRAFT_VERSION.jar --nogui; \

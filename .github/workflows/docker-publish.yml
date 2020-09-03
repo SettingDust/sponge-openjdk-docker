@@ -1,0 +1,48 @@
+name: Docker
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - v*
+
+  pull_request:
+
+env:
+  IMAGE_NAME: sponge-openjdk
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build forge image
+        run: docker build . -f Dockerfile -t "$IMAGE_NAME:forge"
+
+      - name: Build vanilla image
+        run: docker build . --build-arg SPONGE_TYPE=spongevanilla --build-arg SPONGE_VERSION=7.3.0 -f Dockerfile -t $IMAGE_NAME:vanilla
+
+      - name: Log into GitHub Container Registry
+        run: echo "${{ secrets.GPR_TOKEN }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Push image to GitHub Container Registry
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+
+          docker tag $IMAGE_NAME:forge $IMAGE_ID:forge
+          docker tag $IMAGE_NAME:vanilla $IMAGE_ID:vanilla
+          docker push $IMAGE_ID:forge
+          docker push $IMAGE_ID:vanilla
